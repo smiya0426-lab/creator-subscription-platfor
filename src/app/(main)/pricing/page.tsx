@@ -1,13 +1,37 @@
-import { getUserWithSubscription } from '@/lib/supabase/server'
-import { PricingClient } from './PricingClient'
-import { Sparkles, HelpCircle, Star } from 'lucide-react'
+import { Star, Crown, Sparkles, Check, HelpCircle } from 'lucide-react'
+import Link from 'next/link'
 
-export default async function PricingPage() {
-    const { user, currentTier } = await getUserWithSubscription()
+const plans = [
+    {
+        id: 0,
+        name: 'フリー',
+        price: 0,
+        icon: Sparkles,
+        gradient: 'from-blue-500 to-cyan-400',
+        features: ['無料コンテンツの閲覧', 'コミュニティへの参加', 'お知らせ通知'],
+    },
+    {
+        id: 1,
+        name: 'ベーシック',
+        price: 500,
+        icon: Star,
+        gradient: 'from-purple-500 to-indigo-500',
+        popular: true,
+        features: ['フリープランの全機能', 'ベーシック限定コンテンツ', '月2回の限定配信', 'コメント機能'],
+    },
+    {
+        id: 2,
+        name: 'プレミアム',
+        price: 1000,
+        icon: Crown,
+        gradient: 'from-pink-500 to-rose-400',
+        features: ['ベーシックの全機能', 'すべての限定コンテンツ', '週1回の限定配信', '優先サポート', '限定グッズ抽選'],
+    },
+]
 
+export default function PricingPage() {
     return (
         <div className="relative">
-            {/* Background effects */}
             <div className="absolute inset-0 star-field opacity-30" />
 
             <div className="container py-20 relative z-10">
@@ -22,7 +46,62 @@ export default async function PricingPage() {
                     </p>
                 </div>
 
-                <PricingClient currentTier={currentTier} userId={user?.id || null} />
+                <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
+                    {plans.map((plan) => {
+                        const Icon = plan.icon
+                        return (
+                            <div
+                                key={plan.id}
+                                className={`relative glass border-pink-500/20 rounded-2xl overflow-hidden card-hover ${plan.popular ? 'border-purple-400/50 scale-105 z-10' : ''
+                                    }`}
+                            >
+                                {plan.popular && (
+                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                                        <span className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg inline-flex items-center">
+                                            <Star className="h-3 w-3 mr-1" />
+                                            人気No.1
+                                        </span>
+                                    </div>
+                                )}
+
+                                <div className="p-8 pt-10">
+                                    <div className={`mx-auto mb-4 w-16 h-16 rounded-full bg-gradient-to-br ${plan.gradient} flex items-center justify-center glow-purple`}>
+                                        <Icon className="h-8 w-8 text-white" />
+                                    </div>
+
+                                    <h3 className="text-2xl font-bold text-white text-center mb-2">{plan.name}</h3>
+
+                                    <div className="text-center mb-8">
+                                        <span className={`text-5xl font-black ${plan.price === 0 ? 'text-blue-400' : 'gradient-text'}`}>
+                                            {plan.price === 0 ? '無料' : `¥${plan.price.toLocaleString()}`}
+                                        </span>
+                                        {plan.price > 0 && <span className="text-purple-300/60 ml-1">/月</span>}
+                                    </div>
+
+                                    <ul className="space-y-4 mb-8">
+                                        {plan.features.map((feature, index) => (
+                                            <li key={index} className="flex items-start gap-3">
+                                                <div className={`mt-0.5 rounded-full p-1 shrink-0 bg-gradient-to-br ${plan.gradient} bg-opacity-20`}>
+                                                    <Check className="h-3 w-3 text-white" />
+                                                </div>
+                                                <span className="text-purple-100 text-sm">{feature}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                    <button
+                                        className={`w-full py-4 font-bold rounded-xl transition-all ${plan.popular
+                                                ? 'btn-gradient text-white'
+                                                : 'bg-white/10 hover:bg-white/20 text-white border border-pink-500/30'
+                                            }`}
+                                    >
+                                        {plan.price === 0 ? '無料で始める' : 'このプランを選ぶ'}
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
 
                 <div className="mt-24">
                     <div className="text-center mb-10">
