@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ファンミヤ - サブスクリプション型コンテンツ配信</title>
+    <meta name="description" content="クリエイター向けサブスクリプション型コンテンツ配信プラットフォーム。限定コンテンツを有料会員に配信できます。">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="#" class="logo" onclick="showPage('home'); return false;">
+                <span class="logo-icon">✨</span>
+                <span class="logo-text">ファンミヤ</span>
+            </a>
+            <nav class="nav">
+                <a href="#" class="nav-link" onclick="showPage('home'); return false;">ホーム</a>
+                <a href="#" class="nav-link" onclick="showPage('pricing'); return false;">プラン</a>
+                <a href="#" class="nav-link" onclick="showPage('admin'); return false;">管理画面</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="showPage('login')">ログイン</button>
+                <button class="btn btn-primary" onclick="showPage('register')">新規登録</button>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <nav class="mobile-nav">
+            <a href="#" onclick="showPage('home'); closeMobileMenu(); return false;">ホーム</a>
+            <a href="#" onclick="showPage('pricing'); closeMobileMenu(); return false;">プラン</a>
+            <a href="#" onclick="showPage('admin'); closeMobileMenu(); return false;">管理画面</a>
+            <a href="#" onclick="showPage('login'); closeMobileMenu(); return false;">ログイン</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main id="app"></main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-icon">✨</span>
+                        <span class="logo-text">ファンミヤ</span>
+                    </div>
+                    <p class="footer-desc">クリエイターのための<br>サブスクリプションプラットフォーム</p>
+                </div>
+                <div class="footer-links">
+                    <h4>サービス</h4>
+                    <a href="#">機能紹介</a>
+                    <a href="#">料金プラン</a>
+                    <a href="#">よくある質問</a>
+                </div>
+                <div class="footer-links">
+                    <h4>サポート</h4>
+                    <a href="#">お問い合わせ</a>
+                    <a href="#">利用規約</a>
+                    <a href="#">プライバシーポリシー</a>
+                </div>
+                <div class="footer-links">
+                    <h4>技術スタック</h4>
+                    <a href="https://nextjs.org" target="_blank">Next.js</a>
+                    <a href="https://supabase.com" target="_blank">Supabase</a>
+                    <a href="https://stripe.com" target="_blank">Stripe</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ファンミヤ. All rights reserved.</p>
+                <p class="footer-note">This is a portfolio demo project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Templates -->
+    <template id="page-home">
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="container hero-content">
+                <span class="hero-badge">
+                    <span class="badge-icon">✨</span>
+                    限定コンテンツを配信中
+                </span>
+                <h1 class="hero-title">
+                    <span class="gradient-text">特別な体験</span>を<br>お届けします
+                </h1>
+                <p class="hero-desc">
+                    クリエイターの限定コンテンツにアクセスして、<br>
+                    特別なコミュニティの一員になりませんか？
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-lg" onclick="showPage('pricing')">
+                        ⭐ プランを見る
+                    </button>
+                    <button class="btn btn-outline btn-lg" onclick="scrollToContent()">
+                        コンテンツを見る
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>プラットフォームの特徴</h2>
+                    <p>クリエイターと支援者をつなぐ、安全で使いやすいプラットフォーム</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>セキュアな決済</h3>
+                        <p>Stripeによる安全な決済システムで、クレジットカード情報を安全に処理します。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>コンテンツ管理</h3>
+                        <p>画像、テキスト、動画など様々なコンテンツを簡単にアップロード・管理できます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>収益分析</h3>
+                        <p>ダッシュボードで収益やファン数の推移をリアルタイムで確認できます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="posts-section" id="posts">
+            <div class="container">
+                <div class="section-header">
+                    <h2>最新のコンテンツ</h2>
+                    <p>新しく公開されたコンテンツをチェック</p>
+                </div>
+                <div class="posts-grid">
+                    <!-- Free Post -->
+                    <article class="post-card" onclick="showPage('post-free')">
+                        <div class="post-image free">
+                            <div class="post-placeholder">🎨</div>
+                            <span class="post-badge badge-free">無料</span>
+                        </div>
+                        <div class="post-content">
+                            <h3>はじめての投稿</h3>
+                            <p>これは誰でも見ることができる無料の投稿です。サンプルのイラストを公開しています。</p>
+                            <div class="post-meta">
+                                <span>📅 2024/02/01</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Plan A Post -->
+                    <article class="post-card" onclick="showPage('post-locked')">
+                        <div class="post-image locked">
+                            <div class="post-placeholder blur">🎭</div>
+                            <div class="lock-overlay">
+                                <div class="lock-icon">🔒</div>
+                                <span>プランA限定</span>
+                            </div>
+                            <span class="post-badge badge-plan-a">プランA</span>
+                        </div>
+                        <div class="post-content">
+                            <h3>【限定】ラフスケッチ公開</h3>
+                            <p class="locked-text">この内容はプランA会員限定です</p>
+                            <div class="post-meta">
+                                <span>📅 2024/02/05</span>
+                                <a href="#" onclick="event.stopPropagation(); showPage('pricing')">プランを見る →</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Plan B Post -->
+                    <article class="post-card" onclick="showPage('post-locked')">
+                        <div class="post-image locked">
+                            <div class="post-placeholder blur">🖼️</div>
+                            <div class="lock-overlay">
+                                <div class="lock-icon">🔒</div>
+                                <span>プランB限定</span>
+                            </div>
+                            <span class="post-badge badge-plan-b">プランB</span>
+                        </div>
+                        <div class="post-content">
+                            <h3>高画質壁紙ダウンロード</h3>
+                            <p class="locked-text">この内容はプランB会員限定です</p>
+                            <div class="post-meta">
+                                <span>📅 2024/02/10</span>
+                                <a href="#" onclick="event.stopPropagation(); showPage('pricing')">プランを見る →</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Another Free Post -->
+                    <article class="post-card" onclick="showPage('post-free')">
+                        <div class="post-image free">
+                            <div class="post-placeholder">📝</div>
+                            <span class="post-badge badge-free">無料</span>
+                        </div>
+                        <div class="post-content">
+                            <h3>制作日記 #1</h3>
+                            <p>今月の制作活動についてのレポートです。無料で公開しています。</p>
+                            <div class="post-meta">
+                                <span>📅 2024/02/12</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Plan A Post 2 -->
+                    <article class="post-card" onclick="showPage('post-locked')">
+                        <div class="post-image locked">
+                            <div class="post-placeholder blur">🎬</div>
+                            <div class="lock-overlay">
+                                <div class="lock-icon">🔒</div>
+                                <span>プランA限定</span>
+                            </div>
+                            <span class="post-badge badge-plan-a">プランA</span>
+                        </div>
+                        <div class="post-content">
+                            <h3>メイキング動画</h3>
+                            <p class="locked-text">この内容はプランA会員限定です</p>
+                            <div class="post-meta">
+                                <span>📅 2024/02/15</span>
+                                <a href="#" onclick="event.stopPropagation(); showPage('pricing')">プランを見る →</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Plan B Post 2 -->
+                    <article class="post-card" onclick="showPage('post-locked')">
+                        <div class="post-image locked">
+                            <div class="post-placeholder blur">💎</div>
+                            <div class="lock-overlay">
+                                <div class="lock-icon">🔒</div>
+                                <span>プランB限定</span>
+                            </div>
+                            <span class="post-badge badge-plan-b">プランB</span>
+                        </div>
+                        <div class="post-content">
+                            <h3>限定グッズ先行公開</h3>
+                            <p class="locked-text">この内容はプランB会員限定です</p>
+                            <div class="post-meta">
+                                <span>📅 2024/02/18</span>
+                                <a href="#" onclick="event.stopPropagation(); showPage('pricing')">プランを見る →</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-card">
+                    <h2>今すぐ始めよう</h2>
+                    <p>無料プランから始めて、気に入ったら有料プランにアップグレード</p>
+                    <button class="btn btn-primary btn-lg" onclick="showPage('register')">
+                        無料で登録する
+                    </button>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="page-pricing">
+        <section class="pricing-hero">
+            <div class="container">
+                <h1>プランを選ぶ</h1>
+                <p>あなたに合ったプランを選んで、限定コンテンツにアクセスしよう</p>
+            </div>
+        </section>
+
+        <section class="pricing-section">
+            <div class="container">
+                <div class="pricing-grid">
+                    <!-- Free Plan -->
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>無料会員</h3>
+                            <p>基本機能をお試し</p>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="price">¥0</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ 無料コンテンツの閲覧</li>
+                            <li>✓ コミュニティへのアクセス</li>
+                            <li>✓ 新着通知</li>
+                        </ul>
+                        <button class="btn btn-outline btn-full" onclick="showPage('register')">
+                            無料で始める
+                        </button>
+                    </div>
+
+                    <!-- Plan A (Popular) -->
+                    <div class="pricing-card popular">
+                        <div class="popular-badge">⭐ 人気No.1</div>
+                        <div class="pricing-header">
+                            <h3>プランA</h3>
+                            <p>限定コンテンツにアクセス</p>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="price">¥500</span>
+                            <span class="period">/月</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ 無料コンテンツの閲覧</li>
+                            <li>✓ プランA限定コンテンツ</li>
+                            <li>✓ 月1回の限定配信</li>
+                            <li>✓ コメント機能</li>
+                            <li>✓ 広告なし</li>
+                        </ul>
+                        <button class="btn btn-primary btn-full" onclick="showPage('register')">
+                            登録する
+                        </button>
+                    </div>
+
+                    <!-- Plan B -->
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>プランB</h3>
+                            <p>すべての機能を利用可能</p>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="price">¥1,000</span>
+                            <span class="period">/月</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ プランAの全機能</li>
+                            <li>✓ 高画質ダウンロード</li>
+                            <li>✓ 限定ライブ配信</li>
+                            <li>✓ 優先サポート</li>
+                            <li>✓ 限定イベントへの参加</li>
+                        </ul>
+                        <button class="btn btn-outline btn-full" onclick="showPage('register')">
+                            登録する
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="container">
+                <h2>よくある質問</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h4>支払い方法は何がありますか？</h4>
+                        <p>クレジットカード（Visa, Mastercard, JCB, AMEX）に対応しています。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>いつでも解約できますか？</h4>
+                        <p>はい、いつでも解約可能です。解約後も期間終了まではコンテンツを閲覧できます。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>プランの変更はできますか？</h4>
+                        <p>マイページからいつでもプランの変更が可能です。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>返金には対応していますか？</h4>
+                        <p>サブスクリプション開始から7日以内であれば、全額返金いたします。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="page-post-free">
+        <article class="post-detail">
+            <div class="container">
+                <a href="#" class="back-link" onclick="showPage('home'); return false;">← 戻る</a>
+
+                <header class="post-detail-header">
+                    <span class="post-badge badge-free">無料</span>
+                    <span class="post-date">📅 2024/02/01</span>
+                </header>
+
+                <h1>はじめての投稿</h1>
+
+                <div class="post-detail-image">
+                    <div class="image-placeholder">🎨<br>サンプル画像</div>
+                </div>
+
+                <div class="post-detail-content">
+                    <p>こんにちは！クリエイターです。</p>
+                    <p>今日からここで作品を投稿していきます。まずは無料で誰でも見られるイラストを公開します。</p>
+                    <p>このプラットフォームでは、無料コンテンツと有料限定コンテンツを分けて配信できます。気に入っていただけたら、ぜひ有料プランへの加入を検討してくださいね！</p>
+                    <p>今後も定期的にコンテンツを更新していきますので、お楽しみに。</p>
+                </div>
+
+                <div class="post-actions">
+                    <button class="btn btn-outline">❤️ いいね</button>
+                    <button class="btn btn-outline">💬 コメント</button>
+                    <button class="btn btn-outline">🔗 シェア</button>
+                </div>
+            </div>
+        </article>
+    </template>
+
+    <template id="page-post-locked">
+        <article class="post-detail">
+            <div class="container">
+                <a href="#" class="back-link" onclick="showPage('home'); return false;">← 戻る</a>
+
+                <header class="post-detail-header">
+                    <span class="post-badge badge-plan-a">プランA</span>
+                    <span class="post-date">📅 2024/02/05</span>
+                </header>
+
+                <h1>【限定】ラフスケッチ公開</h1>
+
+                <div class="locked-content-card">
+                    <div class="locked-icon-large">🔒</div>
+                    <h2>限定コンテンツ</h2>
+                    <p>このコンテンツはプランA会員限定です。<br>プランに加入すると、すべての画像とテキストを閲覧できます。</p>
+                    <button class="btn btn-primary btn-lg" onclick="showPage('pricing')">
+                        プランを見る
+                    </button>
+                </div>
+            </div>
+        </article>
+    </template>
+
+    <template id="page-admin">
+        <div class="admin-layout">
+            <aside class="admin-sidebar">
+                <div class="admin-sidebar-header">
+                    <h2>管理画面</h2>
+                </div>
+                <nav class="admin-nav">
+                    <a href="#" class="admin-nav-item active" onclick="return false;">
+                        📊 ダッシュボード
+                    </a>
+                    <a href="#" class="admin-nav-item" onclick="return false;">
+                        📝 投稿管理
+                    </a>
+                    <a href="#" class="admin-nav-item" onclick="return false;">
+                        👥 会員管理
+                    </a>
+                    <a href="#" class="admin-nav-item" onclick="return false;">
+                        ⚙️ 設定
+                    </a>
+                </nav>
+                <div class="admin-sidebar-footer">
+                    <a href="#" onclick="showPage('home'); return false;">← サイトに戻る</a>
+                </div>
+            </aside>
+
+            <main class="admin-main">
+                <h1>ダッシュボード</h1>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <p class="stat-label">月間収益</p>
+                            <p class="stat-value">¥150,000</p>
+                            <p class="stat-change positive">+5% 先月比</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <p class="stat-label">会員数</p>
+                            <p class="stat-value">342</p>
+                            <p class="stat-change positive">+12 今月</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-content">
+                            <p class="stat-label">投稿数</p>
+                            <p class="stat-value">24</p>
+                            <p class="stat-change">+2 今月</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👁️</div>
+                        <div class="stat-content">
+                            <p class="stat-label">閲覧数</p>
+                            <p class="stat-value">12,500</p>
+                            <p class="stat-change positive">+8% 先月比</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h2>最近の投稿</h2>
+                        <button class="btn btn-primary btn-sm">+ 新規投稿</button>
+                    </div>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>タイトル</th>
+                                    <th>ステータス</th>
+                                    <th>公開範囲</th>
+                                    <th>公開日</th>
+                                    <th>アクション</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>限定グッズ先行公開</td>
+                                    <td><span class="status-badge published">公開中</span></td>
+                                    <td><span class="tier-badge tier-b">プランB</span></td>
+                                    <td>2024/02/18</td>
+                                    <td>
+                                        <button class="btn btn-ghost btn-sm">編集</button>
+                                        <button class="btn btn-ghost btn-sm">削除</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>メイキング動画</td>
+                                    <td><span class="status-badge published">公開中</span></td>
+                                    <td><span class="tier-badge tier-a">プランA</span></td>
+                                    <td>2024/02/15</td>
+                                    <td>
+                                        <button class="btn btn-ghost btn-sm">編集</button>
+                                        <button class="btn btn-ghost btn-sm">削除</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>制作日記 #1</td>
+                                    <td><span class="status-badge published">公開中</span></td>
+                                    <td><span class="tier-badge tier-free">無料</span></td>
+                                    <td>2024/02/12</td>
+                                    <td>
+                                        <button class="btn btn-ghost btn-sm">編集</button>
+                                        <button class="btn btn-ghost btn-sm">削除</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>新作の告知</td>
+                                    <td><span class="status-badge draft">下書き</span></td>
+                                    <td><span class="tier-badge tier-free">無料</span></td>
+                                    <td>—</td>
+                                    <td>
+                                        <button class="btn btn-ghost btn-sm">編集</button>
+                                        <button class="btn btn-ghost btn-sm">削除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </template>
+
+    <template id="page-login">
+        <div class="auth-page">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="logo">
+                        <span class="logo-icon">✨</span>
+                        <span class="logo-text">ファンミヤ</span>
+                    </div>
+                    <h1>ログイン</h1>
+                    <p>アカウントにログインしてください</p>
+                </div>
+                <form class="auth-form" onsubmit="showPage('home'); return false;">
+                    <div class="form-group">
+                        <label>メールアドレス</label>
+                        <input type="email" placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>パスワード</label>
+                        <input type="password" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">ログイン</button>
+                </form>
+                <div class="auth-divider">
+                    <span>または</span>
+                </div>
+                <button class="btn btn-google btn-full" onclick="showPage('home')">
+                    <svg class="google-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="currentColor"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="currentColor"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path fill="currentColor"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    Googleでログイン
+                </button>
+                <p class="auth-footer">
+                    アカウントをお持ちでない方は <a href="#" onclick="showPage('register'); return false;">新規登録</a>
+                </p>
+            </div>
+        </div>
+    </template>
+
+    <template id="page-register">
+        <div class="auth-page">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="logo">
+                        <span class="logo-icon">✨</span>
+                        <span class="logo-text">ファンミヤ</span>
+                    </div>
+                    <h1>新規登録</h1>
+                    <p>アカウントを作成してください</p>
+                </div>
+                <form class="auth-form" onsubmit="showPage('home'); return false;">
+                    <div class="form-group">
+                        <label>ユーザー名</label>
+                        <input type="text" placeholder="username">
+                    </div>
+                    <div class="form-group">
+                        <label>メールアドレス</label>
+                        <input type="email" placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>パスワード</label>
+                        <input type="password" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">登録する</button>
+                </form>
+                <div class="auth-divider">
+                    <span>または</span>
+                </div>
+                <button class="btn btn-google btn-full" onclick="showPage('home')">
+                    <svg class="google-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="currentColor"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="currentColor"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path fill="currentColor"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    Googleで登録
+                </button>
+                <p class="auth-footer">
+                    すでにアカウントをお持ちの方は <a href="#" onclick="showPage('login'); return false;">ログイン</a>
+                </p>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
